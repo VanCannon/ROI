@@ -1,0 +1,318 @@
+---
+/**
+ * ROI Form Component
+ * 7-question form with Marketo-compatible field names
+ *
+ * Marketo Field Mapping:
+ *   email        → Email
+ *   country      → Country
+ *   endpoints    → NumberOfEmployees (custom)
+ *   annual_revenue → AnnualRevenue
+ *   considering_identity_security → IdentitySecurityInterest (custom)
+ *   limited_admins → ITSecurityStaff (custom)
+ *   admins       → IdentityAccessEngineers (custom)
+ */
+---
+
+<form id="roi-form" novalidate>
+  <div class="form-progress">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Q1: Email -->
+  <div class="form-group">
+    <label for="email">
+      <span class="question-number">1</span>
+      Please confirm your email for delivery of your custom report
+    </label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="you@company.com"
+      required
+      autocomplete="email"
+    />
+    <p class="error-message" id="email-error"></p>
+  </div>
+
+  <!-- Q2: Country -->
+  <div class="form-group">
+    <label for="country">
+      <span class="question-number">2</span>
+      What country is your organization's primary location?
+    </label>
+    <select id="country" name="country" required>
+      <option value="">Select a country…</option>
+      <option value="United States">United States</option>
+      <option value="Canada">Canada</option>
+      <option value="United Kingdom">United Kingdom</option>
+      <option value="Germany">Germany</option>
+      <option value="France">France</option>
+      <option value="Australia">Australia</option>
+      <option value="Japan">Japan</option>
+      <option value="India">India</option>
+      <option value="Brazil">Brazil</option>
+      <option value="Mexico">Mexico</option>
+      <option value="Netherlands">Netherlands</option>
+      <option value="Sweden">Sweden</option>
+      <option value="Switzerland">Switzerland</option>
+      <option value="Norway">Norway</option>
+      <option value="Denmark">Denmark</option>
+      <option value="Finland">Finland</option>
+      <option value="Ireland">Ireland</option>
+      <option value="Belgium">Belgium</option>
+      <option value="Austria">Austria</option>
+      <option value="Italy">Italy</option>
+      <option value="Spain">Spain</option>
+      <option value="Portugal">Portugal</option>
+      <option value="Poland">Poland</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Romania">Romania</option>
+      <option value="Hungary">Hungary</option>
+      <option value="Israel">Israel</option>
+      <option value="United Arab Emirates">United Arab Emirates</option>
+      <option value="Saudi Arabia">Saudi Arabia</option>
+      <option value="South Africa">South Africa</option>
+      <option value="Nigeria">Nigeria</option>
+      <option value="Kenya">Kenya</option>
+      <option value="Egypt">Egypt</option>
+      <option value="Singapore">Singapore</option>
+      <option value="South Korea">South Korea</option>
+      <option value="Taiwan">Taiwan</option>
+      <option value="Philippines">Philippines</option>
+      <option value="Thailand">Thailand</option>
+      <option value="Indonesia">Indonesia</option>
+      <option value="Malaysia">Malaysia</option>
+      <option value="Vietnam">Vietnam</option>
+      <option value="New Zealand">New Zealand</option>
+      <option value="Argentina">Argentina</option>
+      <option value="Chile">Chile</option>
+      <option value="Colombia">Colombia</option>
+      <option value="Peru">Peru</option>
+      <option value="Turkey">Turkey</option>
+      <option value="Greece">Greece</option>
+      <option value="Ukraine">Ukraine</option>
+      <option value="Russia">Russia</option>
+      <option value="China">China</option>
+      <option value="Other">Other</option>
+    </select>
+    <p class="error-message" id="country-error"></p>
+  </div>
+
+  <!-- Q3: Employees / Endpoints -->
+  <div class="form-group">
+    <label for="endpoints">
+      <span class="question-number">3</span>
+      How many employees does your organization have in total?
+    </label>
+    <input
+      type="number"
+      id="endpoints"
+      name="endpoints"
+      placeholder="e.g. 500"
+      min="1"
+      required
+    />
+    <p class="error-message" id="endpoints-error"></p>
+  </div>
+
+  <!-- Q4: Annual Revenue -->
+  <div class="form-group">
+    <label for="annual_revenue">
+      <span class="question-number">4</span>
+      What is your organization's total annual revenue?
+    </label>
+    <select id="annual_revenue" name="annual_revenue" required>
+      <option value="">Select a range…</option>
+      <option value="Less than 25 million">Less than $25 million</option>
+      <option value="25 to 100 million">$25 to $100 million</option>
+      <option value="100 to 500 million">$100 to $500 million</option>
+      <option value="500 million to 1 billion">$500 million to $1 billion</option>
+      <option value="1 to 5 billion">$1 to $5 billion</option>
+      <option value="Greater than 5 billion">Greater than $5 billion</option>
+    </select>
+    <p class="error-message" id="annual_revenue-error"></p>
+  </div>
+
+  <!-- Q5: Considering Identity Security -->
+  <div class="form-group">
+    <label for="considering_identity_security">
+      <span class="question-number">5</span>
+      Are you considering an identity security solution in the next 12 months?
+    </label>
+    <select id="considering_identity_security" name="considering_identity_security" required>
+      <option value="">Select…</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+    <p class="error-message" id="considering_identity_security-error"></p>
+  </div>
+
+  <!-- Q6: IT and Security Staff / Limited Admins -->
+  <div class="form-group">
+    <label for="limited_admins">
+      <span class="question-number">6</span>
+      How many employees in your organization work in IT and security?
+    </label>
+    <input
+      type="number"
+      id="limited_admins"
+      name="limited_admins"
+      placeholder="e.g. 50"
+      min="1"
+      required
+    />
+    <p class="error-message" id="limited_admins-error"></p>
+  </div>
+
+  <!-- Q7: IT Staff Salary Assumption -->
+  <div class="form-group">
+    <label for="it_salary">
+      <span class="question-number">7</span>
+      What is the average annual fully-loaded cost of an IT/Security staff member at your organization?
+    </label>
+    <input
+      type="number"
+      id="it_salary"
+      name="it_salary"
+      placeholder="e.g. 150000"
+      min="1"
+      value="150000"
+      required
+    />
+    <p class="hint-text">Default: $150,000 — adjust to match your organization's actual costs</p>
+    <p class="error-message" id="it_salary-error"></p>
+  </div>
+
+  <!-- Q8: Identity/Access Engineers / Admins -->
+  <div class="form-group">
+    <label for="admins">
+      <span class="question-number">8</span>
+      How many engineers are responsible for administration and maintenance of identity management/access management?
+    </label>
+    <input
+      type="number"
+      id="admins"
+      name="admins"
+      placeholder="e.g. 5"
+      min="1"
+      required
+    />
+    <p class="hint-text">Must be no more than 25% of IT and security staff (Question 6)</p>
+    <p class="error-message" id="admins-error"></p>
+  </div>
+
+  <!-- Q9: Admin Salary Assumption -->
+  <div class="form-group">
+    <label for="admin_salary">
+      <span class="question-number">9</span>
+      What is the average annual fully-loaded cost of an Identity/Access Engineer at your organization?
+    </label>
+    <input
+      type="number"
+      id="admin_salary"
+      name="admin_salary"
+      placeholder="e.g. 175000"
+      min="1"
+      value="175000"
+      required
+    />
+    <p class="hint-text">Default: $175,000 — adjust to match your organization's actual costs</p>
+    <p class="error-message" id="admin_salary-error"></p>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" id="submit-btn">
+      <span class="btn-text">Calculate ROI</span>
+      <span class="btn-loading" style="display: none;">
+        <span class="spinner"></span> Calculating…
+      </span>
+    </button>
+  </div>
+</form>
+
+<style>
+  #roi-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-progress {
+    height: 4px;
+    background: rgba(26, 21, 54, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-beacon-green), var(--color-vigilant-blue));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .question-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    background: var(--color-vigilant-blue);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    border-radius: 50%;
+    margin-top: -1px;
+  }
+
+  .hint-text {
+    font-size: 0.8rem;
+    color: rgba(26, 21, 54, 0.5);
+    margin-top: var(--space-xs);
+    margin-bottom: 0;
+  }
+
+  .form-actions {
+    padding-top: var(--space-md);
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.6s ease-in-out infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>

@@ -1,0 +1,310 @@
+/* ============================================
+   Netwrix ROI Calculator — Global Styles
+   Brand tokens, typography, grid background
+   ============================================ */
+
+/* --- Font Faces --- */
+@font-face {
+  font-family: 'Hubot Sans';
+  src: url('/fonts/HubotSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Syne Variable';
+  src: url('/fonts/Syne-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Brand Tokens --- */
+:root {
+  /* Colors */
+  --color-nightwatch: #1A1536;
+  --color-access-white: #FCFAF5;
+  --color-vigilant-blue: #5851DB;
+  --color-beacon-green: #41F27C;
+  --color-signal-yellow: #F4B400;
+  --color-datawave-blue: #219EBC;
+  --color-code-pink: #C14589;
+  --color-flashpoint-orange: #F36A1D;
+
+  /* Typography */
+  --font-heading: 'Hubot Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Syne Variable', 'Segoe UI', system-ui, sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Borders */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(26, 21, 54, 0.05);
+  --shadow-md: 0 4px 6px rgba(26, 21, 54, 0.07);
+  --shadow-lg: 0 10px 15px rgba(26, 21, 54, 0.1);
+  --shadow-xl: 0 20px 25px rgba(26, 21, 54, 0.12);
+}
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-nightwatch);
+  background-color: var(--color-access-white);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* --- Grid Background Pattern --- */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* Grid lines */
+    linear-gradient(rgba(26, 21, 54, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 21, 54, 0.03) 1px, transparent 1px),
+    /* Gradient overlay from beacon green top-left to vigilant blue/datawave blue bottom-right */
+    linear-gradient(135deg,
+      rgba(65, 242, 124, 0.06) 0%,
+      rgba(88, 81, 219, 0.04) 50%,
+      rgba(33, 158, 188, 0.06) 100%);
+  background-size:
+    40px 40px,
+    40px 40px,
+    100% 100%;
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-nightwatch);
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+a {
+  color: var(--color-vigilant-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-datawave-blue);
+}
+
+/* --- Form Elements --- */
+input,
+select,
+textarea,
+button {
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid rgba(26, 21, 54, 0.15);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--color-nightwatch);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-vigilant-blue);
+  box-shadow: 0 0 0 3px rgba(88, 81, 219, 0.15);
+}
+
+input.error,
+select.error {
+  border-color: var(--color-flashpoint-orange);
+  box-shadow: 0 0 0 3px rgba(243, 106, 29, 0.15);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231A1536' d='M6 8.825L1.175 4l.825-.825L6 7.175 10 3.175l.825.825z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  color: var(--color-nightwatch);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--color-vigilant-blue);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #4a43c4;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-vigilant-blue);
+  border: 1.5px solid var(--color-vigilant-blue);
+}
+
+.btn-secondary:hover {
+  background: rgba(88, 81, 219, 0.05);
+}
+
+.btn-cta {
+  background: var(--color-flashpoint-orange);
+  color: #fff;
+}
+
+.btn-cta:hover {
+  background: #e05e15;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* --- Utility Classes --- */
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(26, 21, 54, 0.06);
+}
+
+.error-message {
+  color: var(--color-flashpoint-orange);
+  font-size: 0.85rem;
+  margin-top: var(--space-xs);
+  display: none;
+}
+
+.error-message.visible {
+  display: block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease forwards;
+}

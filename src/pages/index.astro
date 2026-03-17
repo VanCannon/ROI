@@ -1,0 +1,244 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ROIForm from '../components/ROIForm.astro';
+import ROIResults from '../components/ROIResults.astro';
+---
+
+<Layout title="Netwrix ROI Calculator">
+  <div class="container">
+    <div class="page-intro" id="page-intro">
+      <h1>Calculate Your ROI</h1>
+      <p class="intro-text">
+        Discover the return on investment your organization can achieve with
+        <strong>Netwrix Privilege Secure</strong> and <strong>Netwrix PolicyPak</strong>.
+        Complete the form below to receive your personalized ROI analysis.
+      </p>
+    </div>
+
+    <div class="card" id="form-card">
+      <ROIForm />
+    </div>
+
+    <ROIResults />
+  </div>
+</Layout>
+
+<script>
+  import { validateForm, clearFieldError } from '../scripts/validation';
+  import { calculateROI, formatCurrency, formatROI, formatPayback } from '../scripts/calculator';
+  import type { ROIResults } from '../scripts/calculator';
+  import { downloadPDF } from '../scripts/pdfGenerator';
+  import { buildSalesData, saveSalesData, savePDFToServer } from '../scripts/salesOutput';
+
+  // State
+  let currentResults: ROIResults | null = null;
+  let formData = {
+    email: '',
+    country: '',
+    endpoints: 0,
+    annualRevenue: '',
+    consideringIdentitySecurity: '',
+    limitedAdmins: 0,
+    admins: 0,
+    adminSalary: 175000,
+    itSalary: 150000,
+  };
+
+  // DOM References
+  const form = document.getElementById('roi-form') as HTMLFormElement;
+  const formCard = document.getElementById('form-card') as HTMLDivElement;
+  const pageIntro = document.getElementById('page-intro') as HTMLDivElement;
+  const resultsSection = document.getElementById('roi-results') as HTMLElement;
+  const progressBar = document.getElementById('progress-bar') as HTMLDivElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const downloadBtn = document.getElementById('download-pdf-btn') as HTMLButtonElement;
+  const recalcBtn = document.getElementById('recalculate-btn') as HTMLButtonElement;
+
+  // Track form progress
+  const formFields = ['email', 'country', 'endpoints', 'annual_revenue', 'considering_identity_security', 'limited_admins', 'admins', 'admin_salary', 'it_salary'];
+
+  function updateProgress(): void {
+    let filled = 0;
+    formFields.forEach((fieldId) => {
+      const el = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement;
+      if (el && el.value.trim()) filled++;
+    });
+    const pct = Math.round((filled / formFields.length) * 100);
+    progressBar.style.width = `${pct}%`;
+  }
+
+  // Attach progress listeners
+  formFields.forEach((fieldId) => {
+    const el = document.getElementById(fieldId);
+    if (el) {
+      el.addEventListener('input', () => {
+        clearFieldError(fieldId);
+        updateProgress();
+      });
+      el.addEventListener('change', () => {
+        clearFieldError(fieldId);
+        updateProgress();
+      });
+    }
+  });
+
+  // Display results
+  function displayResults(results: ROIResults): void {
+    document.getElementById('result-investment')!.textContent = formatCurrency(results.initialInvestment);
+    document.getElementById('result-annual-savings')!.textContent = formatCurrency(results.annualSavings);
+    document.getElementById('result-discounted-savings')!.textContent = formatCurrency(results.discountedSavings);
+    document.getElementById('result-roi')!.textContent = formatROI(results.roi);
+    document.getElementById('result-payback')!.textContent = formatPayback(results.paybackMonths);
+    document.getElementById('assumption-it-savings')!.textContent = formatCurrency(0.05 * (formData.limitedAdmins - formData.admins) * formData.itSalary);
+    document.getElementById('assumption-admin-savings')!.textContent = formatCurrency(0.25 * formData.admins * formData.adminSalary);
+    pageIntro.style.display = 'none';
+    formCard.style.display = 'none';
+    resultsSection.style.display = 'block';
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Form submission
+  form.addEventListener('submit', async (e: Event) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      // Scroll to first error
+      const firstError = document.querySelector('.error-message.visible');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // Show loading state
+    const btnText = submitBtn.querySelector('.btn-text') as HTMLElement;
+    const btnLoading = submitBtn.querySelector('.btn-loading') as HTMLElement;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
+    submitBtn.disabled = true;
+
+    // Collect form data
+    formData = {
+      email: (document.getElementById('email') as HTMLInputElement).value.trim(),
+      country: (document.getElementById('country') as HTMLSelectElement).value,
+      endpoints: parseInt((document.getElementById('endpoints') as HTMLInputElement).value, 10),
+      annualRevenue: (document.getElementById('annual_revenue') as HTMLSelectElement).value,
+      consideringIdentitySecurity: (document.getElementById('considering_identity_security') as HTMLSelectElement).value,
+      limitedAdmins: parseInt((document.getElementById('limited_admins') as HTMLInputElement).value, 10),
+      admins: parseInt((document.getElementById('admins') as HTMLInputElement).value, 10),
+      adminSalary: parseInt((document.getElementById('admin_salary') as HTMLInputElement).value, 10),
+      itSalary: parseInt((document.getElementById('it_salary') as HTMLInputElement).value, 10),
+    };
+
+    // Calculate ROI
+    currentResults = calculateROI({
+      admins: formData.admins,
+      limited_admins: formData.limitedAdmins,
+      endpoints: formData.endpoints,
+      admin_salary: formData.adminSalary,
+      it_salary: formData.itSalary,
+    });
+
+    // Display results
+    displayResults(currentResults);
+
+    // Save sales data to server (async, non-blocking)
+    const salesData = buildSalesData(
+      formData.email,
+      formData.country,
+      formData.endpoints,
+      formData.annualRevenue,
+      formData.consideringIdentitySecurity,
+    );
+
+    saveSalesData(salesData).then((result) => {
+      if (result.success) {
+        console.log('Sales data saved:', result.filename);
+      } else {
+        console.warn('Failed to save sales data:', result.error);
+      }
+    });
+
+    // Reset button state
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    submitBtn.disabled = false;
+  });
+
+  // Download PDF
+  downloadBtn.addEventListener('click', async () => {
+    if (!currentResults) return;
+
+    const btnText = downloadBtn.querySelector('.btn-text') as HTMLElement;
+    const btnLoading = downloadBtn.querySelector('.btn-loading') as HTMLElement;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
+    downloadBtn.disabled = true;
+
+    try {
+      const pdfBlob = await downloadPDF({
+        email: formData.email,
+        country: formData.country,
+        endpoints: formData.endpoints,
+        annualRevenue: formData.annualRevenue,
+        admins: formData.admins,
+        limitedAdmins: formData.limitedAdmins,
+        adminSalary: formData.adminSalary,
+        itSalary: formData.itSalary,
+        results: currentResults,
+      });
+
+      // Save PDF to server (async)
+      savePDFToServer(pdfBlob, formData.email).then((result) => {
+        if (result.success) {
+          console.log('PDF saved to server:', result.filename);
+        } else {
+          console.warn('Failed to save PDF to server:', result.error);
+        }
+      });
+    } catch (err) {
+      console.error('Error generating PDF:', err);
+      alert('There was an error generating your PDF report. Please try again.');
+    }
+
+    btnText.style.display = 'inline';
+    btnLoading.style.display = 'none';
+    downloadBtn.disabled = false;
+  });
+
+  // Recalculate button
+  recalcBtn.addEventListener('click', () => {
+    resultsSection.style.display = 'none';
+    pageIntro.style.display = 'block';
+    formCard.style.display = 'block';
+    formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style>
+  .page-intro {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    padding-top: var(--space-md);
+  }
+
+  .page-intro h1 {
+    margin-bottom: var(--space-md);
+    background: linear-gradient(135deg, var(--color-nightwatch) 0%, var(--color-vigilant-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .intro-text {
+    color: rgba(26, 21, 54, 0.65);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .intro-text strong {
+    color: var(--color-nightwatch);
+  }
+</style>

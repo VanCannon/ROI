@@ -1,0 +1,412 @@
+---
+/**
+ * ROI Results Display Component
+ * Shows calculated ROI metrics with branded styling
+ * Hidden by default, shown after form submission
+ */
+---
+
+<section id="roi-results" class="results-section" style="display: none;">
+  <div class="results-header">
+    <h2>Your ROI Analysis</h2>
+    <p class="results-subtitle">Based on your organization's profile, here's your projected return on investment with Netwrix Privilege Secure and Netwrix PolicyPak.</p>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card metric-card--investment">
+      <div class="metric-icon">💰</div>
+      <div class="metric-value" id="result-investment">—</div>
+      <div class="metric-label">Initial Investment</div>
+    </div>
+
+    <div class="metric-card metric-card--savings">
+      <div class="metric-icon">📈</div>
+      <div class="metric-value" id="result-annual-savings">—</div>
+      <div class="metric-label">Annual Cost Savings</div>
+    </div>
+
+    <div class="metric-card metric-card--discounted">
+      <div class="metric-icon">🏦</div>
+      <div class="metric-value" id="result-discounted-savings">—</div>
+      <div class="metric-label">3-Year Discounted Savings</div>
+    </div>
+
+    <div class="metric-card metric-card--roi highlight">
+      <div class="metric-icon">🚀</div>
+      <div class="metric-value" id="result-roi">—</div>
+      <div class="metric-label">Return on Investment</div>
+    </div>
+
+    <div class="metric-card metric-card--payback highlight">
+      <div class="metric-icon">⏱️</div>
+      <div class="metric-value" id="result-payback">—</div>
+      <div class="metric-label">Payback Period</div>
+    </div>
+  </div>
+
+  <div class="assumptions-block">
+    <h3 class="assumptions-title">How Your Annual Savings Were Calculated</h3>
+    <div class="assumptions-rows">
+      <div class="assumption-row">
+        <div class="assumption-desc">
+          <span class="assumption-pct">5%</span> reduction in IT &amp; security staff time — rotating passwords, determining and implementing GPO policies, and managing local access manually
+        </div>
+        <div class="assumption-value" id="assumption-it-savings">—</div>
+      </div>
+      <div class="assumption-row">
+        <div class="assumption-desc">
+          <span class="assumption-pct">25%</span> reduction in IAM staff time — implementing, maintaining, and auditing zero-standing privilege on critical assets
+        </div>
+        <div class="assumption-value" id="assumption-admin-savings">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="breach-callout">
+    <div class="breach-callout-inner">
+      <div class="breach-callout-icon">🛡️</div>
+      <div class="breach-callout-content">
+        <h3 class="breach-callout-title">Additional Risk Consideration</h3>
+        <p class="breach-callout-stat">
+          The average US breach in 2025 cost
+          <span class="breach-amount">$10.22M</span>
+          or <span class="breach-amount">$166</span> per PII record.
+        </p>
+        <p class="breach-callout-source">— IBM Cost of a Data Breach Report 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="assumptions-block">
+    <h3 class="assumptions-title">Breach Risk Reduction — 3-Year Expected Cost Example</h3>
+    <div class="assumptions-rows">
+      <div class="assumption-row">
+        <div class="assumption-desc">
+          <span class="assumption-pct">3% / yr</span> average breach probability <em>without</em> PAM — expected cost over 3 years
+          <span class="assumption-formula">$10.22M × (1 − 0.97³)</span>
+        </div>
+        <div class="assumption-value assumption-value--risk">$892,000</div>
+      </div>
+      <div class="assumption-row">
+        <div class="assumption-desc">
+          <span class="assumption-pct">1.5% / yr</span> breach probability <em>with</em> PAM (50% reduction) — expected cost over 3 years
+          <span class="assumption-formula">$10.22M × (1 − 0.985³)</span>
+        </div>
+        <div class="assumption-value assumption-value--safe">$453,000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-actions">
+    <button type="button" class="btn btn-primary" id="download-pdf-btn">
+      <span class="btn-text">📄 Download PDF Report</span>
+      <span class="btn-loading" style="display: none;">
+        <span class="spinner"></span> Generating PDF…
+      </span>
+    </button>
+    <button type="button" class="btn btn-secondary" id="recalculate-btn">
+      ↩ Modify Inputs
+    </button>
+  </div>
+</section>
+
+<style>
+  .results-section {
+    animation: slideUp 0.5s ease forwards;
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .results-header h2 {
+    font-size: 2rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .results-subtitle {
+    color: rgba(26, 21, 54, 0.6);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .metric-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(26, 21, 54, 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-vigilant-blue);
+  }
+
+  .metric-card--investment::before {
+    background: var(--color-datawave-blue);
+  }
+
+  .metric-card--savings::before {
+    background: var(--color-beacon-green);
+  }
+
+  .metric-card--discounted::before {
+    background: var(--color-vigilant-blue);
+  }
+
+  .metric-card--roi::before {
+    background: linear-gradient(90deg, var(--color-beacon-green), var(--color-vigilant-blue));
+  }
+
+  .metric-card--payback::before {
+    background: linear-gradient(90deg, var(--color-datawave-blue), var(--color-beacon-green));
+  }
+
+  .metric-card.highlight {
+    grid-column: span 1;
+  }
+
+  .metrics-grid .metric-card:nth-child(4),
+  .metrics-grid .metric-card:nth-child(5) {
+    /* The last two cards take 1.5 cols each to center */
+  }
+
+  .metric-icon {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .metric-value {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: var(--color-nightwatch);
+    margin-bottom: var(--space-xs);
+    letter-spacing: -0.02em;
+  }
+
+  .metric-label {
+    font-size: 0.8rem;
+    color: rgba(26, 21, 54, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Make the last two cards span properly */
+  @media (min-width: 600px) {
+    .metrics-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .metrics-grid .metric-card:nth-child(1),
+    .metrics-grid .metric-card:nth-child(2),
+    .metrics-grid .metric-card:nth-child(3) {
+      grid-column: span 2;
+    }
+
+    .metrics-grid .metric-card:nth-child(4) {
+      grid-column: 2 / span 2;
+    }
+
+    .metrics-grid .metric-card:nth-child(5) {
+      grid-column: 4 / span 2;
+    }
+  }
+
+  .assumptions-block {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(26, 21, 54, 0.06);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: var(--space-xl);
+  }
+
+  .assumptions-title {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(26, 21, 54, 0.45);
+    margin-bottom: var(--space-md);
+  }
+
+  .assumptions-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .assumption-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+  }
+
+  .assumption-desc {
+    font-size: 0.9rem;
+    color: rgba(26, 21, 54, 0.7);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .assumption-pct {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-vigilant-blue);
+  }
+
+  .assumption-value {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-nightwatch);
+    white-space: nowrap;
+    min-width: 110px;
+    text-align: right;
+  }
+
+  .assumption-value--risk {
+    color: var(--color-flashpoint-orange);
+  }
+
+  .assumption-value--safe {
+    color: var(--color-beacon-green);
+    filter: brightness(0.75);
+  }
+
+  .assumption-formula {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(26, 21, 54, 0.4);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .breach-callout {
+    margin-bottom: var(--space-xl);
+  }
+
+  .breach-callout-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    background: linear-gradient(135deg, rgba(26, 21, 54, 0.03) 0%, rgba(243, 106, 29, 0.06) 100%);
+    border: 1.5px solid rgba(243, 106, 29, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-xl);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .breach-callout-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-flashpoint-orange), var(--color-signal-yellow));
+  }
+
+  .breach-callout-icon {
+    font-size: 2.5rem;
+    min-width: 50px;
+    text-align: center;
+    padding-top: var(--space-xs);
+  }
+
+  .breach-callout-content {
+    flex: 1;
+  }
+
+  .breach-callout-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--color-nightwatch);
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.01em;
+  }
+
+  .breach-callout-stat {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(26, 21, 54, 0.8);
+    margin-bottom: var(--space-sm);
+  }
+
+  .breach-amount {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-flashpoint-orange);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .breach-callout-source {
+    font-size: 0.85rem;
+    color: rgba(26, 21, 54, 0.5);
+    font-style: italic;
+    margin: 0;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .results-actions .btn {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.6s ease-in-out infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 599px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .results-actions {
+      flex-direction: column;
+    }
+  }
+</style>
