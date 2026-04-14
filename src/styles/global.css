@@ -23,14 +23,12 @@
 /* --- Brand Tokens --- */
 :root {
   /* Colors */
-  --color-nightwatch: #1A1536;
+  --color-nightwatch: #231A40;
   --color-access-white: #FCFAF5;
   --color-vigilant-blue: #5851DB;
   --color-beacon-green: #41F27C;
   --color-signal-yellow: #F4B400;
-  --color-datawave-blue: #219EBC;
-  --color-code-pink: #C14589;
-  --color-flashpoint-orange: #F36A1D;
+  --color-accent-fill: #DEDCF8;
 
   /* Typography */
   --font-heading: 'Hubot Sans', 'Segoe UI', system-ui, sans-serif;
@@ -47,15 +45,15 @@
 
   /* Borders */
   --radius-sm: 4px;
-  --radius-md: 8px;
+  --radius-md: 6px;
   --radius-lg: 12px;
   --radius-xl: 16px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(26, 21, 54, 0.05);
-  --shadow-md: 0 4px 6px rgba(26, 21, 54, 0.07);
-  --shadow-lg: 0 10px 15px rgba(26, 21, 54, 0.1);
-  --shadow-xl: 0 20px 25px rgba(26, 21, 54, 0.12);
+  --shadow-sm: 0 1px 2px rgba(35, 26, 64, 0.05);
+  --shadow-md: 0 4px 16px rgba(35, 26, 64, 0.06);
+  --shadow-lg: 0 10px 15px rgba(35, 26, 64, 0.1);
+  --shadow-xl: 0 20px 25px rgba(35, 26, 64, 0.12);
 }
 
 /* --- Reset & Base --- */
@@ -94,13 +92,13 @@ body::before {
   pointer-events: none;
   background-image:
     /* Grid lines */
-    linear-gradient(rgba(26, 21, 54, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26, 21, 54, 0.03) 1px, transparent 1px),
-    /* Gradient overlay from beacon green top-left to vigilant blue/datawave blue bottom-right */
+    linear-gradient(rgba(35, 26, 64, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 26, 64, 0.03) 1px, transparent 1px),
+    /* Gradient overlay */
     linear-gradient(135deg,
       rgba(65, 242, 124, 0.06) 0%,
       rgba(88, 81, 219, 0.04) 50%,
-      rgba(33, 158, 188, 0.06) 100%);
+      rgba(65, 242, 124, 0.03) 100%);
   background-size:
     40px 40px,
     40px 40px,
@@ -140,7 +138,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-datawave-blue);
+  color: rgba(88, 81, 219, 0.75);
 }
 
 /* --- Form Elements --- */
@@ -158,8 +156,8 @@ input[type="number"],
 select {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1.5px solid rgba(26, 21, 54, 0.15);
-  border-radius: var(--radius-md);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-sm);
   background: #fff;
   color: var(--color-nightwatch);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -178,12 +176,12 @@ select:focus {
 
 input.error,
 select.error {
-  border-color: var(--color-flashpoint-orange);
-  box-shadow: 0 0 0 3px rgba(243, 106, 29, 0.15);
+  border-color: var(--color-signal-yellow);
+  box-shadow: 0 0 0 3px rgba(244, 180, 0, 0.15);
 }
 
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231A1536' d='M6 8.825L1.175 4l.825-.825L6 7.175 10 3.175l.825.825z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23231A40' d='M6 8.825L1.175 4l.825-.825L6 7.175 10 3.175l.825.825z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
@@ -205,21 +203,22 @@ label {
   padding: 0.875rem 2rem;
   border: none;
   border-radius: var(--radius-md);
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 400;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
+/* Primary — light backgrounds */
 .btn-primary {
   background: var(--color-vigilant-blue);
-  color: #fff;
+  color: var(--color-access-white);
 }
 
 .btn-primary:hover {
-  background: #4a43c4;
+  background: rgba(88, 81, 219, 0.8);
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
@@ -228,6 +227,7 @@ label {
   transform: translateY(0);
 }
 
+/* Secondary — light backgrounds */
 .btn-secondary {
   background: transparent;
   color: var(--color-vigilant-blue);
@@ -238,15 +238,33 @@ label {
   background: rgba(88, 81, 219, 0.05);
 }
 
+/* CTA — dark (Nightwatch) backgrounds */
 .btn-cta {
-  background: var(--color-flashpoint-orange);
-  color: #fff;
+  background: var(--color-beacon-green);
+  color: var(--color-nightwatch);
 }
 
 .btn-cta:hover {
-  background: #e05e15;
+  background: rgba(65, 242, 124, 0.8);
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
+}
+
+/* Ghost — dark (Nightwatch) backgrounds */
+.btn-ghost {
+  background: transparent;
+  color: rgba(252, 250, 245, 0.6);
+  border: 1px solid rgba(252, 250, 245, 0.2);
+}
+
+.btn-ghost:hover {
+  color: var(--color-access-white);
+  border-color: rgba(252, 250, 245, 0.4);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* --- Utility Classes --- */
@@ -261,14 +279,14 @@ label {
 
 .card {
   background: #fff;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   padding: var(--space-xl);
   box-shadow: var(--shadow-md);
-  border: 1px solid rgba(26, 21, 54, 0.06);
+  border: 1px solid rgba(35, 26, 64, 0.06);
 }
 
 .error-message {
-  color: var(--color-flashpoint-orange);
+  color: var(--color-signal-yellow);
   font-size: 0.85rem;
   margin-top: var(--space-xs);
   display: none;

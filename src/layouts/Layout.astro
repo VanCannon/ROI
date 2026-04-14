@@ -62,13 +62,15 @@ const { title } = Astro.props;
   }
 
   .header-badge {
-    font-family: var(--font-heading);
-    font-size: 0.85rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--color-vigilant-blue);
-    background: rgba(88, 81, 219, 0.08);
-    padding: 0.35rem 0.85rem;
-    border-radius: 20px;
-    letter-spacing: 0.03em;
+    background: rgba(88, 81, 219, 0.1);
+    border: 1px solid rgba(88, 81, 219, 0.2);
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-md);
+    letter-spacing: 0.02em;
   }
 
   .netwrix-logo {
@@ -88,12 +90,12 @@ const { title } = Astro.props;
     z-index: 1;
     padding: var(--space-xl) 0;
     text-align: center;
-    border-top: 1px solid rgba(26, 21, 54, 0.06);
+    border-top: 1px solid rgba(35, 26, 64, 0.06);
   }
 
   .site-footer p {
     font-size: 0.85rem;
-    color: rgba(26, 21, 54, 0.5);
+    color: rgba(35, 26, 64, 0.5);
     margin: 0;
   }
 </style>
