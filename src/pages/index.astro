@@ -32,8 +32,9 @@ import ROIResults from '../components/ROIResults.astro';
 
   // State
   let currentResults: ROIResults | null = null;
+  const emailFromUrl = new URLSearchParams(window.location.search).get('email') ?? '';
   let formData = {
-    email: '',
+    email: emailFromUrl,
     country: '',
     endpoints: 0,
     annualRevenue: '',
@@ -55,7 +56,7 @@ import ROIResults from '../components/ROIResults.astro';
   const recalcBtn = document.getElementById('recalculate-btn') as HTMLButtonElement;
 
   // Track form progress
-  const formFields = ['email', 'country', 'endpoints', 'annual_revenue', 'considering_identity_security', 'limited_admins', 'admins', 'admin_salary', 'it_salary'];
+  const formFields = ['country', 'endpoints', 'annual_revenue', 'considering_identity_security', 'limited_admins', 'admins', 'admin_salary', 'it_salary'];
 
   function updateProgress(): void {
     let filled = 0;
@@ -119,7 +120,7 @@ import ROIResults from '../components/ROIResults.astro';
 
     // Collect form data
     formData = {
-      email: (document.getElementById('email') as HTMLInputElement).value.trim(),
+      email: emailFromUrl,
       country: (document.getElementById('country') as HTMLSelectElement).value,
       endpoints: parseInt((document.getElementById('endpoints') as HTMLInputElement).value, 10),
       annualRevenue: (document.getElementById('annual_revenue') as HTMLSelectElement).value,

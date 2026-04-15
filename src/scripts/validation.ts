@@ -163,17 +163,7 @@ export function clearFieldError(fieldId: string): void {
 export function validateForm(): boolean {
   let isValid = true;
 
-  // Q1 — Email
-  const email = (document.getElementById('email') as HTMLInputElement)?.value ?? '';
-  const emailResult = validateEmail(email);
-  if (!emailResult.valid) {
-    showFieldError('email', emailResult.message);
-    isValid = false;
-  } else {
-    clearFieldError('email');
-  }
-
-  // Q2 — Country
+  // Q1 — Country
   const country = (document.getElementById('country') as HTMLSelectElement)?.value ?? '';
   const countryResult = validateCountry(country);
   if (!countryResult.valid) {
