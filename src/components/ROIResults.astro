@@ -14,31 +14,26 @@
 
   <div class="metrics-grid">
     <div class="metric-card metric-card--investment">
-      <div class="metric-icon">💰</div>
       <div class="metric-value" id="result-investment">—</div>
       <div class="metric-label">Initial Investment</div>
     </div>
 
     <div class="metric-card metric-card--savings">
-      <div class="metric-icon">📈</div>
       <div class="metric-value" id="result-annual-savings">—</div>
       <div class="metric-label">Annual Cost Savings</div>
     </div>
 
     <div class="metric-card metric-card--discounted">
-      <div class="metric-icon">🏦</div>
       <div class="metric-value" id="result-discounted-savings">—</div>
       <div class="metric-label">3-Year Discounted Savings</div>
     </div>
 
     <div class="metric-card metric-card--roi highlight">
-      <div class="metric-icon">🚀</div>
       <div class="metric-value" id="result-roi">—</div>
       <div class="metric-label">Return on Investment</div>
     </div>
 
     <div class="metric-card metric-card--payback highlight">
-      <div class="metric-icon">⏱️</div>
       <div class="metric-value" id="result-payback">—</div>
       <div class="metric-label">Payback Period</div>
     </div>
@@ -127,13 +122,15 @@
 
   .results-header h2 {
     font-size: 2rem;
+    font-weight: 700;
     margin-bottom: var(--space-sm);
     color: var(--color-access-white);
   }
 
   .results-subtitle {
     color: rgba(252, 250, 245, 0.6);
-    font-size: 0.95rem;
+    font-size: 0.9375rem;
+    font-family: var(--font-body);
     max-width: 600px;
     margin: 0 auto;
     margin-bottom: 0;
@@ -155,29 +152,21 @@
     display: flex;
     flex-direction: column;
     min-height: 120px;
-    transition: transform 0.2s ease;
-  }
-
-  .metric-card:hover {
-    transform: translateY(-2px);
-  }
-
-  .metric-icon {
-    font-size: 1.25rem;
-    margin-bottom: var(--space-xs);
   }
 
   .metric-value {
     font-family: var(--font-heading);
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-weight: 700;
     color: var(--color-beacon-green);
     margin-bottom: var(--space-xs);
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
   }
 
   .metric-label {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-family: var(--font-body);
     font-weight: 600;
     color: var(--color-access-white);
@@ -219,7 +208,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.08em;
     color: rgba(252, 250, 245, 0.3);
     margin-bottom: var(--space-md);
   }
