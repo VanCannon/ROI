@@ -94,13 +94,13 @@
 
   <div class="results-actions">
     <button type="button" class="btn btn-cta" id="download-pdf-btn">
-      <span class="btn-text">📄 Download PDF Report</span>
+      <span class="btn-text">Download PDF Summary</span>
       <span class="btn-loading" style="display: none;">
         <span class="spinner"></span> Generating PDF…
       </span>
     </button>
-    <button type="button" class="btn btn-ghost" id="recalculate-btn">
-      ↩ Modify Inputs
+    <button type="button" class="recalc-link" id="recalculate-btn">
+      ← Adjust inputs
     </button>
   </div>
 </section>
@@ -271,10 +271,11 @@
     font-style: italic;
   }
 
-  /* Breach callout — warning style on dark */
+  /* Breach callout — standard dark callout */
   .breach-callout {
     margin-bottom: var(--space-xl);
-    border: 1px solid rgba(244, 180, 0, 0.2);
+    background: rgba(252, 250, 245, 0.05);
+    border: 1px solid rgba(252, 250, 245, 0.1);
     border-radius: var(--radius-sm);
     padding: var(--space-xl);
   }
@@ -328,14 +329,32 @@
   /* Action buttons */
   .results-actions {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--space-md);
     margin-bottom: var(--space-sm);
   }
 
   .results-actions .btn {
-    flex: 1;
+    width: 100%;
     padding: 1rem;
     font-size: 1rem;
+  }
+
+  .recalc-link {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: #9ca3af;
+    transition: color 150ms;
+    text-decoration: none;
+  }
+
+  .recalc-link:hover {
+    color: #4b5563;
   }
 
   /* Spinner — dark variant for beacon-green (btn-cta) background */
@@ -366,10 +385,6 @@
 
     .metrics-grid {
       grid-template-columns: 1fr;
-    }
-
-    .results-actions {
-      flex-direction: column;
     }
 
     .breach-callout-inner {
