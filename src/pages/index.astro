@@ -48,36 +48,18 @@ import ROIResults from '../components/ROIResults.astro';
   const formCard = document.getElementById('form-card') as HTMLDivElement;
   const pageIntro = document.getElementById('page-intro') as HTMLDivElement;
   const resultsSection = document.getElementById('roi-results') as HTMLElement;
-  const progressBar = document.getElementById('progress-bar') as HTMLDivElement;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const downloadBtn = document.getElementById('download-pdf-btn') as HTMLButtonElement;
   const recalcBtn = document.getElementById('recalculate-btn') as HTMLButtonElement;
 
-  // Track form progress
   const formFields = ['country', 'endpoints', 'annual_revenue', 'considering_identity_security', 'limited_admins', 'admins', 'admin_salary', 'it_salary'];
 
-  function updateProgress(): void {
-    let filled = 0;
-    formFields.forEach((fieldId) => {
-      const el = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement;
-      if (el && el.value.trim()) filled++;
-    });
-    const pct = Math.round((filled / formFields.length) * 100);
-    progressBar.style.width = `${pct}%`;
-  }
-
-  // Attach progress listeners
+  // Attach field listeners for validation clearing
   formFields.forEach((fieldId) => {
     const el = document.getElementById(fieldId);
     if (el) {
-      el.addEventListener('input', () => {
-        clearFieldError(fieldId);
-        updateProgress();
-      });
-      el.addEventListener('change', () => {
-        clearFieldError(fieldId);
-        updateProgress();
-      });
+      el.addEventListener('input', () => clearFieldError(fieldId));
+      el.addEventListener('change', () => clearFieldError(fieldId));
     }
   });
 

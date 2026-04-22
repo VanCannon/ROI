@@ -250,7 +250,7 @@ label {
 }
 
 .card {
-  background: #fff;
+  background: #FCFAF5;
   border-radius: var(--radius-sm);
   padding: var(--space-xl);
   box-shadow: var(--shadow-md);

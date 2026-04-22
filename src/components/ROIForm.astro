@@ -15,10 +15,6 @@
 ---
 
 <form id="roi-form" novalidate>
-  <div class="form-progress">
-    <div class="progress-bar" id="progress-bar"></div>
-  </div>
-
   <!-- Q1: Country -->
   <div class="form-group">
     <label for="country">
@@ -220,22 +216,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-  }
-
-  .form-progress {
-    height: 4px;
-    background: rgba(35, 26, 64, 0.06);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: var(--space-sm);
-  }
-
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--color-beacon-green), var(--color-vigilant-blue));
-    border-radius: 2px;
-    transition: width 0.3s ease;
   }
 
   .form-group {
