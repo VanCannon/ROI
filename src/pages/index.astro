@@ -198,7 +198,7 @@ import ROIResults from '../components/ROIResults.astro';
 
 <style>
   .page-intro {
-    text-align: center;
+    text-align: left;
     margin-bottom: var(--space-xl);
     padding-top: var(--space-md);
   }
@@ -206,13 +206,22 @@ import ROIResults from '../components/ROIResults.astro';
   .page-intro h1 {
     margin-bottom: var(--space-md);
     color: var(--color-nightwatch);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-intro h1 {
+      font-size: 2.25rem;
+    }
   }
 
   .intro-text {
     color: rgba(35, 26, 64, 0.65);
     font-size: 1.05rem;
     max-width: 600px;
-    margin: 0 auto;
+    font-family: var(--font-body);
     line-height: 1.7;
   }
 
