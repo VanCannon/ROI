@@ -54,36 +54,12 @@ html {
 body {
   font-family: var(--font-body);
   color: var(--color-nightwatch);
-  background-color: var(--color-access-white);
+  background-color: #ffffff;
   line-height: 1.6;
   min-height: 100vh;
   position: relative;
 }
 
-/* --- Grid Background Pattern --- */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    /* Grid lines */
-    linear-gradient(rgba(35, 26, 64, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(35, 26, 64, 0.03) 1px, transparent 1px),
-    /* Gradient overlay */
-    linear-gradient(135deg,
-      rgba(65, 242, 124, 0.06) 0%,
-      rgba(88, 81, 219, 0.04) 50%,
-      rgba(65, 242, 124, 0.03) 100%);
-  background-size:
-    40px 40px,
-    40px 40px,
-    100% 100%;
-}
 
 /* --- Typography --- */
 h1, h2, h3, h4, h5, h6 {
@@ -250,7 +226,7 @@ label {
 }
 
 .card {
-  background: #fff;
+  background: #FCFAF5;
   border-radius: var(--radius-sm);
   padding: var(--space-xl);
   box-shadow: var(--shadow-md);

@@ -15,10 +15,6 @@
 ---
 
 <form id="roi-form" novalidate>
-  <div class="form-progress">
-    <div class="progress-bar" id="progress-bar"></div>
-  </div>
-
   <!-- Q1: Country -->
   <div class="form-group">
     <label for="country">
@@ -207,9 +203,15 @@
 
   <div class="form-actions">
     <button type="submit" class="btn btn-primary" id="submit-btn">
-      <span class="btn-text">Calculate ROI</span>
+      <span class="btn-text">Calculate My ROI →</span>
       <span class="btn-loading" style="display: none;">
         <span class="spinner"></span> Calculating…
+      </span>
+    </button>
+    <button type="button" class="btn btn-pdf" id="download-pdf-btn" style="display: none;">
+      <span class="btn-text">Download PDF Summary</span>
+      <span class="btn-loading" style="display: none;">
+        <span class="spinner"></span> Generating…
       </span>
     </button>
   </div>
@@ -220,22 +222,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-  }
-
-  .form-progress {
-    height: 4px;
-    background: rgba(35, 26, 64, 0.06);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: var(--space-sm);
-  }
-
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--color-beacon-green), var(--color-vigilant-blue));
-    border-radius: 2px;
-    transition: width 0.3s ease;
   }
 
   .form-group {
@@ -278,12 +264,87 @@
 
   .form-actions {
     padding-top: var(--space-md);
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+    flex-wrap: wrap;
   }
 
+  /* ── Design-system button base (.c--btn-a) ─────────────── */
   .form-actions .btn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    overflow-clip-margin: 1px;
+    text-align: center;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    text-decoration: none;
+    border-radius: 3rem;
+    padding: 0.625rem 1.5rem;
+    width: fit-content;
+    flex: 1;
+    cursor: pointer;
+    border: none;
+    z-index: 1;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  /* Hover blob */
+  .form-actions .btn::before {
+    content: '';
+    position: absolute;
+    bottom: calc((2rem + 1px) * -1);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    z-index: -1;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .form-actions .btn:hover::before {
+      width: calc(150% + 2rem);
+      height: calc(200% + 2rem);
+    }
+  }
+
+  /* Primary — purple (.c--btn-a) */
+  #submit-btn {
+    background: #5851DB;
+    color: #FCFAF5;
+  }
+  #submit-btn::before { background: #41F27C; }
+  @media (hover: hover) and (pointer: fine) {
+    #submit-btn:hover { color: #000000; }
+  }
+
+  /* Adjust-inputs state — outline (.c--btn-a--second) */
+  #submit-btn.is-adjust {
+    background: #FCFAF5;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: calc(0.625rem - 1px) calc(1.5rem - 1px);
+  }
+  #submit-btn.is-adjust::before { background: #41F27C; }
+  @media (hover: hover) and (pointer: fine) {
+    #submit-btn.is-adjust:hover { color: #000000; }
+  }
+
+  /* PDF button — green (.c--btn-a--third) */
+  .btn-pdf {
+    background: #41F27C;
+    color: #000000;
+  }
+  .btn-pdf::before { background: #5851DB; }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-pdf:hover { color: #FCFAF5; }
   }
 
   .spinner {

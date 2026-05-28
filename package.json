@@ -9,12 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.13",
-    "@astrojs/node": "^9.5.4",
-    "astro": "^5.17.1",
-    "jspdf": "^4.2.0"
+    "@astrojs/cloudflare": "^13.1.10",
+    "@astrojs/node": "^10.0.5",
+    "astro": "^6.1.8",
+    "jspdf": "^4.2.1"
   },
   "devDependencies": {
-    "@types/node": "^25.3.3"
+    "@types/node": "^25.6.0",
+    "wrangler": "^4.95.0"
   }
 }
