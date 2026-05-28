@@ -50,7 +50,6 @@ import ROIResults from '../components/ROIResults.astro';
   const resultsSection = document.getElementById('roi-results') as HTMLElement;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const downloadBtn = document.getElementById('download-pdf-btn') as HTMLButtonElement;
-  const recalcBtn = document.getElementById('recalculate-btn') as HTMLButtonElement;
 
   const formFields = ['country', 'endpoints', 'annual_revenue', 'considering_identity_security', 'limited_admins', 'admins', 'admin_salary', 'it_salary'];
 
@@ -72,15 +71,29 @@ import ROIResults from '../components/ROIResults.astro';
     document.getElementById('result-payback')!.textContent = formatPayback(results.paybackMonths);
     document.getElementById('assumption-it-savings')!.textContent = formatCurrency(0.05 * (formData.limitedAdmins - formData.admins) * formData.itSalary);
     document.getElementById('assumption-admin-savings')!.textContent = formatCurrency(0.25 * formData.admins * formData.adminSalary);
-    pageIntro.style.display = 'none';
-    formCard.style.display = 'none';
+    (document.getElementById('result-breakdown-total') as HTMLElement).textContent = formatCurrency(results.annualSavings);
     resultsSection.style.display = 'block';
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    (submitBtn.querySelector('.btn-text') as HTMLElement).textContent = '← Adjust inputs';
+    submitBtn.classList.add('is-adjust');
+    downloadBtn.style.display = 'inline-flex';
   }
 
   // Form submission
   form.addEventListener('submit', async (e: Event) => {
     e.preventDefault();
+
+    // "← Adjust inputs" mode — reset and go back
+    if (resultsSection.style.display === 'block') {
+      resultsSection.style.display = 'none';
+      form.reset();
+      currentResults = null;
+      (submitBtn.querySelector('.btn-text') as HTMLElement).textContent = 'Calculate My ROI →';
+      submitBtn.classList.remove('is-adjust');
+      downloadBtn.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     if (!validateForm()) {
       // Scroll to first error
@@ -140,7 +153,7 @@ import ROIResults from '../components/ROIResults.astro';
       }
     });
 
-    // Reset button state
+    // Reset button loading state (text is updated by displayResults)
     btnText.style.display = 'inline';
     btnLoading.style.display = 'none';
     submitBtn.disabled = false;
@@ -187,13 +200,6 @@ import ROIResults from '../components/ROIResults.astro';
     downloadBtn.disabled = false;
   });
 
-  // Recalculate button
-  recalcBtn.addEventListener('click', () => {
-    resultsSection.style.display = 'none';
-    pageIntro.style.display = 'block';
-    formCard.style.display = 'block';
-    formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
 </script>
 
 <style>
